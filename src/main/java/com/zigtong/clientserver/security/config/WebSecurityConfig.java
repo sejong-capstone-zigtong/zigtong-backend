@@ -10,6 +10,7 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
@@ -17,10 +18,16 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import com.zigtong.clientserver.security.constant.CorsUris;
 import com.zigtong.clientserver.security.constant.PublicUris;
 import com.zigtong.clientserver.security.constant.SwaggerUris;
+import com.zigtong.clientserver.security.filter.JwtAuthenticationFilter;
+
+import lombok.RequiredArgsConstructor;
 
 @Configuration
+@RequiredArgsConstructor
 @EnableWebSecurity
 public class WebSecurityConfig {
+	private final JwtAuthenticationFilter jwtAuthenticationFilter;
+
 	@Bean
 	public PasswordEncoder passwordEncoder() {
 		return new BCryptPasswordEncoder();
@@ -58,15 +65,16 @@ public class WebSecurityConfig {
 		defaultFilterChain(http);
 
 		http.authorizeHttpRequests(
-			authorize ->
-				authorize
-					.requestMatchers(PublicUris.getAllUrisWithEndpointPrefix().toArray(String[]::new))
-					.permitAll()
-					.requestMatchers(SwaggerUris.getAllUris().toArray(String[]::new))
-					.permitAll()
-					.anyRequest()
-					.authenticated()
-		);
+				authorize ->
+					authorize
+						.requestMatchers(PublicUris.getAllUrisWithEndpointPrefix().toArray(String[]::new))
+						.permitAll()
+						.requestMatchers(SwaggerUris.getAllUris().toArray(String[]::new))
+						.permitAll()
+						.anyRequest()
+						.authenticated()
+			)
+			.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 
 		return http.build();
 	}
