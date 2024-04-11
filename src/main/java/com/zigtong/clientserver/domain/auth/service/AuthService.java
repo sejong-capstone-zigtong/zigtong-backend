@@ -36,7 +36,7 @@ public class AuthService {
 		NurigoMessageNotReceivedException,
 		NurigoEmptyResponseException,
 		NurigoUnknownException {
-		String verificationCode = generateVerifyCode();
+		String verificationCode = generateVerifcationCode();
 
 		setVerificationSession(verificationCode, session);
 		smsService.sendMessage(request.receiver(), String.format(VERIFICATION_CODE_MESSAGE, verificationCode));
@@ -44,23 +44,23 @@ public class AuthService {
 		return VerificationCodeMessageResponse.success();
 	}
 
-	private String generateVerifyCode() {
+	private String generateVerifcationCode() {
 		return String.valueOf((int)(Math.random() * Math.pow(10, VERIFICATION_CODE_LENGTH)));
 	}
 
-	private void setVerificationSession(String verifyCode, HttpSession session) {
+	private void setVerificationSession(String verificationCode, HttpSession session) {
 		session.setMaxInactiveInterval(SESSION_TIME_OUT_SEC);
-		session.setAttribute(VERIFICATION_CODE_SESSION_ATTRIBUTE, verifyCode);
+		session.setAttribute(VERIFICATION_CODE_SESSION_ATTRIBUTE, verificationCode);
 	}
 
 	public VerificationResponse verify(VerificationRequest request, HttpSession session) {
-		String sessionVerifyCode = (String)session.getAttribute(VERIFICATION_CODE_SESSION_ATTRIBUTE);
+		String verificationCode = (String)session.getAttribute(VERIFICATION_CODE_SESSION_ATTRIBUTE);
 
-		if (sessionVerifyCode == null) {
+		if (verificationCode == null) {
 			throw new CustomException(EXPIRED_VERIFICATION_CODE);
 		}
 
-		if (!sessionVerifyCode.equals(request.verificationCode())) {
+		if (!verificationCode.equals(request.verificationCode())) {
 			throw new CustomException(INVALID_VERIFICATION_CODE);
 		}
 

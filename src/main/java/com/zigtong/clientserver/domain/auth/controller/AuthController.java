@@ -28,7 +28,7 @@ public class AuthController {
 	private final AuthService authService;
 
 	@PostMapping("/send-code")
-	public VerificationCodeMessageResponse sendVerifyCode(@RequestBody VerificationCodeMessageRequest request,
+	public VerificationCodeMessageResponse sendVerificationCode(@RequestBody VerificationCodeMessageRequest request,
 		HttpServletRequest servletRequest) throws
 		NurigoMessageNotReceivedException,
 		NurigoEmptyResponseException,
