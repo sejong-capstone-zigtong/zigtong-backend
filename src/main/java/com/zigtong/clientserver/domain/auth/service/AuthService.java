@@ -36,7 +36,7 @@ public class AuthService {
 		NurigoMessageNotReceivedException,
 		NurigoEmptyResponseException,
 		NurigoUnknownException {
-		String verificationCode = generateVerifcationCode();
+		String verificationCode = generateVerificationCode();
 
 		setVerificationSession(verificationCode, session);
 		smsService.sendMessage(request.receiver(), String.format(VERIFICATION_CODE_MESSAGE, verificationCode));
@@ -44,7 +44,7 @@ public class AuthService {
 		return VerificationCodeMessageResponse.success();
 	}
 
-	private String generateVerifcationCode() {
+	private String generateVerificationCode() {
 		return String.valueOf((int)(Math.random() * Math.pow(10, VERIFICATION_CODE_LENGTH)));
 	}
 
