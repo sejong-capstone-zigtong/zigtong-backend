@@ -16,6 +16,11 @@ import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
+import net.nurigo.sdk.message.exception.NurigoEmptyResponseException;
+import net.nurigo.sdk.message.exception.NurigoMessageNotReceivedException;
+import net.nurigo.sdk.message.exception.NurigoUnknownException;
+import net.nurigo.sdk.message.model.FailedMessage;
+
 import com.zigtong.clientserver.error.ErrorCode;
 import com.zigtong.clientserver.error.ErrorResponse;
 import com.zigtong.clientserver.global.common.response.GlobalResponse;
@@ -139,6 +144,32 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 		final GlobalResponse response =
 			GlobalResponse.fail(errorCode.getStatus().value(), errorResponse);
 		return ResponseEntity.status(errorCode.getStatus()).body(response);
+	}
+
+	/**
+	 * 문자 API(coolSms) 예외 처리
+	 */
+	@ExceptionHandler(NurigoMessageNotReceivedException.class)
+	public ResponseEntity<GlobalResponse> handleNurigoMessageNotReceivedException(NurigoMessageNotReceivedException e) {
+		log.error("NurigoMessageNotReceivedException : {}", e.getMessage(), e);
+		FailedMessage failedMessage = e.getFailedMessageList().get(0);
+
+		final ErrorResponse errorResponse =
+			ErrorResponse.of(e.getClass().getSimpleName(), failedMessage.getStatusMessage());
+		final GlobalResponse response =
+			GlobalResponse.fail(HttpStatus.SERVICE_UNAVAILABLE.value(), errorResponse);
+		return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).body(response);
+	}
+
+	@ExceptionHandler({NurigoUnknownException.class, NurigoEmptyResponseException.class})
+	public ResponseEntity<GlobalResponse> handleOtherNurigoMessageException(Exception e) {
+		log.error("{} : {}", e.getClass().getSimpleName(), e.getMessage());
+
+		final ErrorResponse errorResponse =
+			ErrorResponse.of(e.getClass().getSimpleName(), e.getMessage());
+		final GlobalResponse response =
+			GlobalResponse.fail(HttpStatus.SERVICE_UNAVAILABLE.value(), errorResponse);
+		return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).body(response);
 	}
 
 	/**
