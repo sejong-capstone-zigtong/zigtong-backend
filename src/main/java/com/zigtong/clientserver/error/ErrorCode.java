@@ -18,7 +18,6 @@ public enum ErrorCode {
 
 	// 휴대폰 인증 에러
 	INVALID_PHONE_NUMBER(HttpStatus.BAD_REQUEST, "유효하지 않은 휴대폰 번호입니다."),
-	EXISTING_PHONE_NUMBER(HttpStatus.CONFLICT, "이미 존재하는 휴대폰 번호입니다."),
 	INVALID_VERIFICATION_CODE(HttpStatus.BAD_REQUEST, "유효하지 않은 인증번호입니다."),
 	EXPIRED_VERIFICATION_CODE(HttpStatus.FORBIDDEN, "인증번호가 만료되었습니다."),
 	EXPIRED_VERIFICATION_SESSION(HttpStatus.FORBIDDEN, "인증 세션이 만료되었습니다."),
@@ -30,12 +29,9 @@ public enum ErrorCode {
 	// 회원가입 및 회원정보 수정 에러
 	INVALID_PASSWORD(HttpStatus.BAD_REQUEST, "계정과 일치하지 않는 비밀번호입니다."),
 	PASSWORD_NOT_MATCH(HttpStatus.BAD_REQUEST, "비밀번호가 일치하지 않습니다."),
-	DUPLICATED_EMAIL(HttpStatus.CONFLICT, "이미 존재하는 이메일입니다."),
 	DUPLICATED_NICKNAME(HttpStatus.CONFLICT, "이미 존재하는 닉네임입니다."),
-	DUPLICATED_STUDENT_ID(HttpStatus.CONFLICT, "이미 존재하는 학번입니다."),
 	DUPLICATED_PHONE_NUMBER(HttpStatus.CONFLICT, "이미 존재하는 전화번호입니다."),
-	DUPLICATED_ACCOUNT(HttpStatus.CONFLICT, "이미 존재하는 계정입니다."),
-	DUPLICATED_KAKAO_ACCOUNT(HttpStatus.CONFLICT, "이미 사용중인 카카오 계정입니다."),
+	DUPLICATED_MEMBER_ACCOUNT(HttpStatus.CONFLICT, "이미 존재하는 계정입니다."),
 
 	// 조회 에러
 	MEMBER_NOT_FOUND(HttpStatus.NOT_FOUND, "존재하지 않는 회원입니다."),

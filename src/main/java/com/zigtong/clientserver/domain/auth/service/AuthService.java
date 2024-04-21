@@ -37,13 +37,14 @@ public class AuthService {
 
 	private final WorkerRepository workerRepository;
 
+	@Transactional(readOnly = true)
 	public VerificationCodeMessageResponse sendVerificationCode(VerificationCodeMessageRequest request,
 		HttpSession session) throws
 		NurigoMessageNotReceivedException,
 		NurigoEmptyResponseException,
 		NurigoUnknownException {
 		if (workerRepository.existsByPhoneNumber(request.receiver())) {
-			throw new CustomException(EXISTING_PHONE_NUMBER);
+			throw new CustomException(DUPLICATED_PHONE_NUMBER);
 		}
 
 		String verificationCode = generateVerificationCode();

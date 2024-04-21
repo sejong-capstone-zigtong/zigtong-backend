@@ -11,7 +11,7 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor
 public enum PublicUris {
 	SIGN_IN("/auth/sign-in"),
-	SIGN_UP("/member/sign-up"),
+	SIGN_UP("/worker/sign-up"),
 	SEND_CODE("/auth/send-code"),
 	VERIFY("/auth/verify");
 
