@@ -18,8 +18,10 @@ public enum ErrorCode {
 
 	// 휴대폰 인증 에러
 	INVALID_PHONE_NUMBER(HttpStatus.BAD_REQUEST, "유효하지 않은 휴대폰 번호입니다."),
+	EXISTING_PHONE_NUMBER(HttpStatus.CONFLICT, "이미 존재하는 휴대폰 번호입니다."),
 	INVALID_VERIFICATION_CODE(HttpStatus.BAD_REQUEST, "유효하지 않은 인증번호입니다."),
-	EXPIRED_VERIFICATION_CODE(HttpStatus.BAD_REQUEST, "인증번호가 만료되었습니다."),
+	EXPIRED_VERIFICATION_CODE(HttpStatus.FORBIDDEN, "인증번호가 만료되었습니다."),
+	EXPIRED_VERIFICATION_SESSION(HttpStatus.FORBIDDEN, "인증 세션이 만료되었습니다."),
 
 	// 인증 에러
 	UNAUTHORIZED(HttpStatus.UNAUTHORIZED, "인증되지 않은 사용자입니다."),

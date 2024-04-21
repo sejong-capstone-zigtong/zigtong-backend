@@ -1,7 +1,7 @@
 package com.zigtong.clientserver.domain.auth.dto.request;
 
-import static com.zigtong.clientserver.domain.auth.validation.ValidationConstant.*;
 import static com.zigtong.clientserver.domain.auth.validation.ValidationMessage.*;
+import static com.zigtong.clientserver.global.validation.Regexp.*;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
