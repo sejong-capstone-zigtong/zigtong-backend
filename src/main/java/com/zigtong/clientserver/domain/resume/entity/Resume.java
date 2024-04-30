@@ -48,4 +48,8 @@ public class Resume {
 			resumeCertificateRelations.add(ResumeCertificateRelation.create(this, certificate));
 		}
 	}
+
+	public void updateStatement(String statement) {
+		this.content = statement;
+	}
 }

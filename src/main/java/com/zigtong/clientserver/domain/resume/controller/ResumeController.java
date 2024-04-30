@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.zigtong.clientserver.domain.resume.dto.request.CertificateUpdateRequest;
+import com.zigtong.clientserver.domain.resume.dto.request.StatementUpdateRequest;
 import com.zigtong.clientserver.domain.resume.service.ResumeService;
 import com.zigtong.clientserver.security.util.SecurityContextUtil;
 
@@ -32,8 +33,10 @@ public class ResumeController {
 	}
 
 	@PutMapping("/statement")
-	public void updateStatement() {
+	public void updateStatement(@RequestBody StatementUpdateRequest request) {
+		String workerId = SecurityContextUtil.extractWorkerId();
 
+		resumeService.updateStatement(request, workerId);
 	}
 
 	@PutMapping("/career")

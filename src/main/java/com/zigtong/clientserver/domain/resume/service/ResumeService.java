@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.zigtong.clientserver.domain.certificate.entity.Certificate;
 import com.zigtong.clientserver.domain.certificate.repository.CertificateRepository;
 import com.zigtong.clientserver.domain.resume.dto.request.CertificateUpdateRequest;
+import com.zigtong.clientserver.domain.resume.dto.request.StatementUpdateRequest;
 import com.zigtong.clientserver.domain.resume.entity.Resume;
 import com.zigtong.clientserver.domain.resume.repository.ResumeRepository;
 
@@ -27,6 +28,15 @@ public class ResumeService {
 		List<Certificate> certificates = certificateRepository.findAllById(request.ids());
 
 		resume.updateCertificates(certificates);
+
+		resumeRepository.save(resume);
+	}
+
+	public void updateStatement(StatementUpdateRequest request, String workerId) {
+		Resume resume = resumeRepository.findById(workerId)
+			.orElseThrow();
+
+		resume.updateStatement(request.statement());
 
 		resumeRepository.save(resume);
 	}
