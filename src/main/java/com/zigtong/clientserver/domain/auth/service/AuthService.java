@@ -3,6 +3,7 @@ package com.zigtong.clientserver.domain.auth.service;
 import static com.zigtong.clientserver.error.ErrorCode.*;
 import static com.zigtong.clientserver.global.validation.Constant.*;
 
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -10,13 +11,17 @@ import net.nurigo.sdk.message.exception.NurigoEmptyResponseException;
 import net.nurigo.sdk.message.exception.NurigoMessageNotReceivedException;
 import net.nurigo.sdk.message.exception.NurigoUnknownException;
 
+import com.zigtong.clientserver.domain.auth.dto.request.SignInRequest;
 import com.zigtong.clientserver.domain.auth.dto.request.VerificationCodeMessageRequest;
 import com.zigtong.clientserver.domain.auth.dto.request.VerificationRequest;
+import com.zigtong.clientserver.domain.auth.dto.response.SignInResponse;
 import com.zigtong.clientserver.domain.auth.dto.response.VerificationCodeMessageResponse;
 import com.zigtong.clientserver.domain.auth.response.VerificationResponse;
+import com.zigtong.clientserver.domain.worker.entity.Worker;
 import com.zigtong.clientserver.domain.worker.repository.WorkerRepository;
 import com.zigtong.clientserver.error.exception.CustomException;
 import com.zigtong.clientserver.infra.sms.SmsService;
+import com.zigtong.clientserver.security.jwt.JwtProvider;
 
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
@@ -34,6 +39,8 @@ public class AuthService {
 	private static final int SESSION_TIME_OUT_AFTER_VERIFICATION = 60 * 10; // 10분
 
 	private final SmsService smsService;
+	private final JwtProvider jwtProvider;
+	private final PasswordEncoder passwordEncoder;
 
 	private final WorkerRepository workerRepository;
 
@@ -98,4 +105,14 @@ public class AuthService {
 		}
 	}
 
+	public SignInResponse signIn(SignInRequest request) {
+		Worker worker = workerRepository.findByMemberAccount(request.memberAccount())
+			.orElseThrow(() -> new CustomException(MEMBER_NOT_FOUND));
+
+		if (!passwordEncoder.matches(request.password(), worker.getPassword())) {
+			throw new CustomException(INVALID_PASSWORD);
+		}
+
+		return new SignInResponse(jwtProvider.generateAccessToken(worker.getId()));
+	}
 }

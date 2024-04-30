@@ -2,18 +2,23 @@ package com.zigtong.clientserver.domain.resume.entity;
 
 import java.util.List;
 
+import com.zigtong.clientserver.domain.certificate.entity.Certificate;
 import com.zigtong.clientserver.domain.worker.entity.Worker;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.Id;
 import jakarta.persistence.MapsId;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
+import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Resume {
 	@Id
 	private String id;
@@ -26,7 +31,7 @@ public class Resume {
 
 	private String content;
 
-	@OneToMany(mappedBy = "resume")
+	@OneToMany(mappedBy = "resume", cascade = CascadeType.PERSIST, orphanRemoval = true)
 	private List<ResumeCertificateRelation> resumeCertificateRelations;
 
 	private Resume(Worker worker) {
@@ -35,5 +40,12 @@ public class Resume {
 
 	public static Resume create(Worker worker) {
 		return new Resume(worker);
+	}
+
+	public void updateCertificates(List<Certificate> certificates) {
+		resumeCertificateRelations.clear();
+		for (Certificate certificate : certificates) {
+			resumeCertificateRelations.add(ResumeCertificateRelation.create(this, certificate));
+		}
 	}
 }

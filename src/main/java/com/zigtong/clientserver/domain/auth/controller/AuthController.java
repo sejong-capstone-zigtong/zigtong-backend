@@ -11,8 +11,10 @@ import net.nurigo.sdk.message.exception.NurigoEmptyResponseException;
 import net.nurigo.sdk.message.exception.NurigoMessageNotReceivedException;
 import net.nurigo.sdk.message.exception.NurigoUnknownException;
 
+import com.zigtong.clientserver.domain.auth.dto.request.SignInRequest;
 import com.zigtong.clientserver.domain.auth.dto.request.VerificationCodeMessageRequest;
 import com.zigtong.clientserver.domain.auth.dto.request.VerificationRequest;
+import com.zigtong.clientserver.domain.auth.dto.response.SignInResponse;
 import com.zigtong.clientserver.domain.auth.dto.response.VerificationCodeMessageResponse;
 import com.zigtong.clientserver.domain.auth.response.VerificationResponse;
 import com.zigtong.clientserver.domain.auth.service.AuthService;
@@ -45,5 +47,10 @@ public class AuthController {
 		HttpSession session = servletRequest.getSession();
 
 		return authService.verify(request, session);
+	}
+
+	@PostMapping("/sign-in")
+	public SignInResponse signIn(@RequestBody SignInRequest request) {
+		return authService.signIn(request);
 	}
 }
