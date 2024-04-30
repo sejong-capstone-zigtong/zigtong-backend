@@ -31,8 +31,11 @@ public class Resume {
 
 	private String content;
 
-	@OneToMany(mappedBy = "resume", cascade = CascadeType.PERSIST, orphanRemoval = true)
+	@OneToMany(mappedBy = "resume", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<ResumeCertificateRelation> resumeCertificateRelations;
+
+	@OneToMany(mappedBy = "resume", cascade = CascadeType.ALL, orphanRemoval = true)
+	private List<Career> careers;
 
 	private Resume(Worker worker) {
 		this.worker = worker;
@@ -51,5 +54,10 @@ public class Resume {
 
 	public void updateStatement(String statement) {
 		this.content = statement;
+	}
+
+	public void updateCareers(List<Career> careers) {
+		this.careers.clear();
+		this.careers.addAll(careers);
 	}
 }

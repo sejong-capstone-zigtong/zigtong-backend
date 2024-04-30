@@ -2,11 +2,14 @@ package com.zigtong.clientserver.domain.resume.controller;
 
 import static com.zigtong.clientserver.global.constant.EndpointConstant.*;
 
+import java.util.List;
+
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.zigtong.clientserver.domain.resume.dto.request.CareerUpdateRequest;
 import com.zigtong.clientserver.domain.resume.dto.request.CertificateUpdateRequest;
 import com.zigtong.clientserver.domain.resume.dto.request.StatementUpdateRequest;
 import com.zigtong.clientserver.domain.resume.service.ResumeService;
@@ -40,8 +43,10 @@ public class ResumeController {
 	}
 
 	@PutMapping("/career")
-	public void updateCareer() {
+	public void updateCareer(@RequestBody List<CareerUpdateRequest> requests) {
+		String workerId = SecurityContextUtil.extractWorkerId();
 
+		resumeService.updateCareer(requests, workerId);
 	}
 
 }
