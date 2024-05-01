@@ -11,6 +11,7 @@ import com.zigtong.clientserver.error.ErrorCode;
 import com.zigtong.clientserver.error.exception.CustomException;
 import com.zigtong.clientserver.security.constant.HeaderConstant;
 import com.zigtong.clientserver.security.constant.PublicUris;
+import com.zigtong.clientserver.security.constant.SwaggerUris;
 import com.zigtong.clientserver.security.jwt.JwtProvider;
 
 import jakarta.servlet.FilterChain;
@@ -55,6 +56,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 	protected boolean shouldNotFilter(HttpServletRequest request) {
 		return PublicUris.getAllUrisWithEndpointPrefix()
 			.stream()
-			.anyMatch(uri -> new AntPathRequestMatcher(uri).matches(request));
+			.anyMatch(uri -> new AntPathRequestMatcher(uri).matches(request)) ||
+			SwaggerUris.getAllUris()
+				.stream()
+				.anyMatch(uri -> new AntPathRequestMatcher(uri).matches(request));
 	}
 }

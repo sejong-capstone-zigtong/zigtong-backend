@@ -19,6 +19,7 @@ import com.zigtong.clientserver.domain.auth.dto.response.VerificationCodeMessage
 import com.zigtong.clientserver.domain.auth.response.VerificationResponse;
 import com.zigtong.clientserver.domain.auth.service.AuthService;
 
+import io.swagger.v3.oas.annotations.Operation;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
@@ -29,6 +30,7 @@ import lombok.RequiredArgsConstructor;
 public class AuthController {
 	private final AuthService authService;
 
+	@Operation(summary = "인증 코드 전송", description = "인증 코드를 전송합니다. 인증 코드는 6자리 숫자입니다. 예시: 123456")
 	@PostMapping("/send-code")
 	public VerificationCodeMessageResponse sendVerificationCode(@RequestBody VerificationCodeMessageRequest request,
 		HttpServletRequest servletRequest) throws
@@ -40,6 +42,7 @@ public class AuthController {
 		return authService.sendVerificationCode(request, session);
 	}
 
+	@Operation(summary = "인증 코드 확인", description = "인증 코드를 확인합니다.")
 	@PostMapping("/verify")
 	public VerificationResponse verifyCode(@RequestBody VerificationRequest request,
 		HttpServletRequest servletRequest) {
@@ -49,6 +52,7 @@ public class AuthController {
 		return authService.verify(request, session);
 	}
 
+	@Operation(summary = "로그인", description = "로그인을 진행 후, Access Token을 발급받습니다.")
 	@PostMapping("/sign-in")
 	public SignInResponse signIn(@RequestBody SignInRequest request) {
 		return authService.signIn(request);

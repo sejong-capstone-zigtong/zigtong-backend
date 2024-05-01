@@ -15,6 +15,7 @@ import com.zigtong.clientserver.domain.resume.dto.request.StatementUpdateRequest
 import com.zigtong.clientserver.domain.resume.service.ResumeService;
 import com.zigtong.clientserver.security.util.SecurityContextUtil;
 
+import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 
 @RestController
@@ -28,6 +29,7 @@ public class ResumeController {
 
 	}
 
+	@Operation(summary = "자격증 정보 수정", description = "이력서의 자격증 정보를 수정합니다.")
 	@PutMapping("/certificate")
 	public void updateCertificates(@RequestBody CertificateUpdateRequest request) {
 		String workerId = SecurityContextUtil.extractWorkerId();
@@ -35,6 +37,7 @@ public class ResumeController {
 		resumeService.updateCertificates(request, workerId);
 	}
 
+	@Operation(summary = "한줄소개 수정", description = "이력서의 한줄소개를 수정합니다.")
 	@PutMapping("/statement")
 	public void updateStatement(@RequestBody StatementUpdateRequest request) {
 		String workerId = SecurityContextUtil.extractWorkerId();
@@ -42,6 +45,7 @@ public class ResumeController {
 		resumeService.updateStatement(request, workerId);
 	}
 
+	@Operation(summary = "경력 수정", description = "이력서의 경력을 수정합니다.")
 	@PutMapping("/career")
 	public void updateCareer(@RequestBody List<CareerUpdateRequest> requests) {
 		String workerId = SecurityContextUtil.extractWorkerId();
