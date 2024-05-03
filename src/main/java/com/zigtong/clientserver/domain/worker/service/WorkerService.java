@@ -14,7 +14,6 @@ import com.zigtong.clientserver.domain.worker.entity.Worker;
 import com.zigtong.clientserver.domain.worker.repository.WorkerRepository;
 import com.zigtong.clientserver.error.exception.CustomException;
 
-import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -27,8 +26,8 @@ public class WorkerService {
 	private final ResumeRepository resumeRepository;
 	private final PasswordEncoder passwordEncoder;
 
-	public void signUp(WorkerSignUpRequest request, HttpSession session) {
-		validateEnableSignUp(request, session);
+	public void signUp(WorkerSignUpRequest request) {
+		validateEnableSignUp(request);
 
 		String encryptedPassword = passwordEncoder.encode(request.password());
 
@@ -39,8 +38,8 @@ public class WorkerService {
 		resumeRepository.save(resume);
 	}
 
-	private void validateEnableSignUp(WorkerSignUpRequest request, HttpSession session) {
-		authService.validateVerificationSession(session);
+	private void validateEnableSignUp(WorkerSignUpRequest request) {
+		//authService.validateVerificationSession(session);
 
 		if (workerRepository.existsByPhoneNumber(request.phoneNumber())) {
 			throw new CustomException(DUPLICATED_PHONE_NUMBER);
