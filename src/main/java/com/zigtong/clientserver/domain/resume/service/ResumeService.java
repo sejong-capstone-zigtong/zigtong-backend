@@ -5,6 +5,7 @@ import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.zigtong.clientserver.domain.certificate.entity.Certificate;
 import com.zigtong.clientserver.domain.certificate.repository.CertificateRepository;
@@ -14,13 +15,17 @@ import com.zigtong.clientserver.domain.resume.dto.request.StatementUpdateRequest
 import com.zigtong.clientserver.domain.resume.entity.Career;
 import com.zigtong.clientserver.domain.resume.entity.Resume;
 import com.zigtong.clientserver.domain.resume.repository.ResumeRepository;
+import com.zigtong.clientserver.infra.s3.service.S3Service;
 
 import lombok.RequiredArgsConstructor;
+import lombok.SneakyThrows;
 
 @Service
 @RequiredArgsConstructor
 @Transactional
 public class ResumeService {
+	private final S3Service s3Service;
+
 	private final ResumeRepository resumeRepository;
 
 	private final CertificateRepository certificateRepository;
@@ -55,5 +60,15 @@ public class ResumeService {
 		resume.updateCareers(careers);
 
 		resumeRepository.save(resume);
+	}
+
+	@SneakyThrows
+	public void uploadProfileImage(String workerId, MultipartFile profileImage) {
+		Resume resume = resumeRepository.findById(workerId)
+			.orElseThrow();
+
+		s3Service.uploadProfileImage(workerId, profileImage);
+
+		resume.updateProfileImageUrl("https://zigtong-profile-image.s3.ap-northeast-2.amazonaws.com/" + workerId);
 	}
 }

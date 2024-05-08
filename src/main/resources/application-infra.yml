@@ -3,3 +3,17 @@ cool-sms:
     key: ${COOL_SMS_API_KEY}
     secret: ${COOL_SMS_API_SECRET}
   sender: ${COOL_SMS_SENDER}
+
+spring:
+  cloud:
+    aws:
+      credentials:
+        access-key: ${S3_ACCESS_KEY}
+        secret-key: ${S3_SECRET_KEY}
+      region:
+        static: ap-northeast-2
+      s3:
+        bucket: ${S3_BUCKET_NAME}
+
+#  stack:
+#    auto: false

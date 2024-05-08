@@ -7,7 +7,9 @@ import java.util.List;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.zigtong.clientserver.domain.resume.dto.request.CareerUpdateRequest;
 import com.zigtong.clientserver.domain.resume.dto.request.CertificateUpdateRequest;
@@ -25,8 +27,10 @@ public class ResumeController {
 	private final ResumeService resumeService;
 
 	@PutMapping("/profile-image")
-	public void uploadProfileImage() {
+	public void uploadProfileImage(@RequestPart(value = "profileImage") MultipartFile profileImage) {
+		String workerId = SecurityContextUtil.extractWorkerId();
 
+		resumeService.uploadProfileImage(workerId, profileImage);
 	}
 
 	@Operation(summary = "자격증 정보 수정", description = "이력서의 자격증 정보를 수정합니다.")

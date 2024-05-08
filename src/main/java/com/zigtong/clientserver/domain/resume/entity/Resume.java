@@ -60,4 +60,8 @@ public class Resume {
 		this.careers.clear();
 		this.careers.addAll(careers);
 	}
+
+	public void updateProfileImageUrl(String uploadedUrl) {
+		this.uploadedUrl = uploadedUrl;
+	}
 }
