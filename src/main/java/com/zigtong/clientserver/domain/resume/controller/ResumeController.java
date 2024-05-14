@@ -4,6 +4,7 @@ import static com.zigtong.clientserver.global.constant.EndpointConstant.*;
 
 import java.util.List;
 
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -14,6 +15,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.zigtong.clientserver.domain.resume.dto.request.CareerUpdateRequest;
 import com.zigtong.clientserver.domain.resume.dto.request.CertificateUpdateRequest;
 import com.zigtong.clientserver.domain.resume.dto.request.StatementUpdateRequest;
+import com.zigtong.clientserver.domain.resume.dto.response.ProfileImageUrlResponse;
 import com.zigtong.clientserver.domain.resume.service.ResumeService;
 import com.zigtong.clientserver.security.util.SecurityContextUtil;
 
@@ -26,11 +28,20 @@ import lombok.RequiredArgsConstructor;
 public class ResumeController {
 	private final ResumeService resumeService;
 
+	@Operation(summary = "프로필 이미지 업로드", description = "이력서의 프로필 이미지를 업로드합니다.")
 	@PutMapping("/profile-image")
 	public void uploadProfileImage(@RequestPart(value = "profileImage") MultipartFile profileImage) {
 		String workerId = SecurityContextUtil.extractWorkerId();
 
 		resumeService.uploadProfileImage(workerId, profileImage);
+	}
+
+	@Operation(summary = "프로필 이미지 URL 조회", description = "이력서의 프로필 이미지 URL을 조회합니다.")
+	@GetMapping("/profile-image")
+	public ProfileImageUrlResponse getProfileImageUploadedUrl() {
+		String workerId = SecurityContextUtil.extractWorkerId();
+
+		return resumeService.getProfileImageUploadedUrl(workerId);
 	}
 
 	@Operation(summary = "자격증 정보 수정", description = "이력서의 자격증 정보를 수정합니다.")

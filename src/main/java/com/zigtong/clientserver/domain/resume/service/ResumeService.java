@@ -12,6 +12,7 @@ import com.zigtong.clientserver.domain.certificate.repository.CertificateReposit
 import com.zigtong.clientserver.domain.resume.dto.request.CareerUpdateRequest;
 import com.zigtong.clientserver.domain.resume.dto.request.CertificateUpdateRequest;
 import com.zigtong.clientserver.domain.resume.dto.request.StatementUpdateRequest;
+import com.zigtong.clientserver.domain.resume.dto.response.ProfileImageUrlResponse;
 import com.zigtong.clientserver.domain.resume.entity.Career;
 import com.zigtong.clientserver.domain.resume.entity.Resume;
 import com.zigtong.clientserver.domain.resume.repository.ResumeRepository;
@@ -70,5 +71,12 @@ public class ResumeService {
 		s3Service.uploadProfileImage(workerId, profileImage);
 
 		resume.updateProfileImageUrl("https://zigtong-profile-image.s3.ap-northeast-2.amazonaws.com/" + workerId);
+	}
+
+	public ProfileImageUrlResponse getProfileImageUploadedUrl(String workerId) {
+		Resume resume = resumeRepository.findById(workerId)
+			.orElseThrow();
+
+		return new ProfileImageUrlResponse(resume.getUploadedUrl());
 	}
 }
