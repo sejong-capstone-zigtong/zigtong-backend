@@ -29,7 +29,7 @@ public class Resume {
 
 	private String uploadedUrl;
 
-	private String content;
+	private String statement;
 
 	@OneToMany(mappedBy = "resume", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<ResumeCertificateRelation> resumeCertificateRelations;
@@ -53,7 +53,7 @@ public class Resume {
 	}
 
 	public void updateStatement(String statement) {
-		this.content = statement;
+		this.statement = statement;
 	}
 
 	public void updateCareers(List<Career> careers) {

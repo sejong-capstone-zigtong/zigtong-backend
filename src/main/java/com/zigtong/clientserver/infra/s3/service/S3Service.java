@@ -22,7 +22,7 @@ public class S3Service {
 	private String BUCKET_NAME;
 
 	@SneakyThrows
-	public void uploadProfileImage(String workerId, MultipartFile profileImage) {
+	public String uploadProfileImage(String workerId, MultipartFile profileImage) {
 		// 이미지 파일인지 검증
 		if (!profileImage.getContentType().startsWith("image/")) {
 			throw new IllegalArgumentException("이미지 파일만 업로드 가능합니다.");
@@ -42,5 +42,8 @@ public class S3Service {
 		if (!response.sdkHttpResponse().isSuccessful()) {
 			log.error("S3 업로드 실패: {}", response.sdkHttpResponse().statusText());
 		}
+
+		// 업로드 경로 반환
+		return s3Client.utilities().getUrl(builder -> builder.bucket(BUCKET_NAME).key(workerId)).toExternalForm();
 	}
 }

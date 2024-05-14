@@ -1,5 +1,7 @@
 package com.zigtong.clientserver.domain.resume.entity;
 
+import java.time.LocalDate;
+
 import com.zigtong.clientserver.domain.resume.dto.request.CareerUpdateRequest;
 
 import jakarta.persistence.Column;
@@ -26,18 +28,23 @@ public class Career {
 	private String companyName;
 	private String role;
 	private String roleDetail;
-	private Integer months;
+
+	private LocalDate startDate;
+
+	private LocalDate endDate;
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	private Resume resume;
 
 	@Builder(access = AccessLevel.PRIVATE)
-	private Career(Resume resume, String companyName, String role, String roleDetail, Integer months) {
+	private Career(Resume resume, String companyName, String role, String roleDetail, LocalDate startDate,
+		LocalDate endDate) {
 		this.resume = resume;
 		this.companyName = companyName;
 		this.role = role;
 		this.roleDetail = roleDetail;
-		this.months = months;
+		this.startDate = startDate;
+		this.endDate = endDate;
 	}
 
 	public static Career create(Resume resume, CareerUpdateRequest request) {
@@ -46,7 +53,8 @@ public class Career {
 			.companyName(request.company())
 			.role(request.role())
 			.roleDetail(request.roleDetail())
-			.months(request.months())
+			.startDate(request.startDate())
+			.endDate(request.endDate())
 			.build();
 	}
 }

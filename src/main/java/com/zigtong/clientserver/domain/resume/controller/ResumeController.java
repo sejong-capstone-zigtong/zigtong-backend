@@ -16,6 +16,7 @@ import com.zigtong.clientserver.domain.resume.dto.request.CareerUpdateRequest;
 import com.zigtong.clientserver.domain.resume.dto.request.CertificateUpdateRequest;
 import com.zigtong.clientserver.domain.resume.dto.request.StatementUpdateRequest;
 import com.zigtong.clientserver.domain.resume.dto.response.ProfileImageUrlResponse;
+import com.zigtong.clientserver.domain.resume.dto.response.ResumeInfoResponse;
 import com.zigtong.clientserver.domain.resume.service.ResumeService;
 import com.zigtong.clientserver.security.util.SecurityContextUtil;
 
@@ -27,6 +28,14 @@ import lombok.RequiredArgsConstructor;
 @RequestMapping(ENDPOINT_PREFIX + "/resume")
 public class ResumeController {
 	private final ResumeService resumeService;
+
+	@Operation(summary = "이력서 정보 조회", description = "이력서 정보를 조회합니다.")
+	@GetMapping("/info")
+	public ResumeInfoResponse getResumeInfo() {
+		String workerId = SecurityContextUtil.extractWorkerId();
+
+		return resumeService.getResumeInfo(workerId);
+	}
 
 	@Operation(summary = "프로필 이미지 업로드", description = "이력서의 프로필 이미지를 업로드합니다.")
 	@PutMapping("/profile-image")
