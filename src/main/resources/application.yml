@@ -6,5 +6,8 @@ spring:
     include:
       - security
       - infra
+  servlet:
+    multipart:
+      max-file-size: 10MB
 swagger:
   version: ${SWAGGER_VERSION:0.0.1}

@@ -4,6 +4,7 @@ import static com.zigtong.clientserver.global.constant.EndpointConstant.*;
 
 import java.util.List;
 
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -38,7 +39,7 @@ public class ResumeController {
 	}
 
 	@Operation(summary = "프로필 이미지 업로드", description = "이력서의 프로필 이미지를 업로드합니다.")
-	@PutMapping("/profile-image")
+	@PutMapping(value = "/profile-image", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
 	public void uploadProfileImage(@RequestPart(value = "profileImage") MultipartFile profileImage) {
 		String workerId = SecurityContextUtil.extractWorkerId();
 
