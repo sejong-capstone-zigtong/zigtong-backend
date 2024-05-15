@@ -6,6 +6,7 @@ import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.zigtong.clientserver.domain.certificate.dto.response.CertificateAffiliationResponse;
 import com.zigtong.clientserver.domain.certificate.dto.response.CertificateInfoResponse;
 import com.zigtong.clientserver.domain.certificate.entity.Certificate;
 import com.zigtong.clientserver.domain.certificate.repository.CertificateRepository;
@@ -28,9 +29,9 @@ public class CertificateService {
 	}
 
 	@Transactional(readOnly = true)
-	public List<String> getCertificateAffiliation() {
+	public CertificateAffiliationResponse getCertificateAffiliation() {
 		List<String> affiliations = certificateRepository.findAllAffiliation();
 
-		return affiliations;
+		return new CertificateAffiliationResponse(affiliations);
 	}
 }

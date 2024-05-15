@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.zigtong.clientserver.domain.certificate.dto.response.CertificateAffiliationResponse;
 import com.zigtong.clientserver.domain.certificate.dto.response.CertificateInfoResponse;
 import com.zigtong.clientserver.domain.certificate.service.CertificateService;
 
@@ -23,7 +24,7 @@ public class CertificateController {
 
 	@Operation(summary = "자격증 카테고리 조회", description = "자격증 카테고리를 조회합니다.")
 	@GetMapping("/affiliation")
-	public List<String> getCertificateCategories() {
+	public CertificateAffiliationResponse getCertificateCategories() {
 		return certificationService.getCertificateAffiliation();
 	}
 
