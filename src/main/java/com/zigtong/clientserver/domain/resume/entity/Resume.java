@@ -37,6 +37,9 @@ public class Resume {
 	@OneToMany(mappedBy = "resume", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<Career> careers;
 
+	@OneToMany(mappedBy = "resume", cascade = CascadeType.ALL, orphanRemoval = true)
+	private List<Skill> skills;
+
 	private Resume(Worker worker) {
 		this.worker = worker;
 	}

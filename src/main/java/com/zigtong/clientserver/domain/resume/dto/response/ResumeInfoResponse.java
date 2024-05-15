@@ -7,7 +7,9 @@ import java.util.stream.Collectors;
 import com.zigtong.clientserver.domain.certificate.entity.Certificate;
 import com.zigtong.clientserver.domain.resume.entity.Career;
 import com.zigtong.clientserver.domain.resume.entity.Resume;
+import com.zigtong.clientserver.domain.resume.entity.Skill;
 import com.zigtong.clientserver.domain.worker.entity.Worker;
+import com.zigtong.clientserver.domain.worker.type.Gender;
 
 import lombok.Builder;
 import lombok.Getter;
@@ -18,6 +20,9 @@ public record ResumeInfoResponse(
 	String phoneNumber,
 	String profileImageUrl,
 	String content,
+	LocalDate birthdate,
+	Gender gender,
+	List<SkillInfoResponse> skills,
 	List<CareerInfoResponse> careers,
 	List<CertificateInfoResponse> certificates
 ) {
@@ -33,11 +38,16 @@ public record ResumeInfoResponse(
 			.phoneNumber(worker.getPhoneNumber())
 			.profileImageUrl(resume.getUploadedUrl())
 			.content(resume.getStatement())
+			.gender(worker.getGender())
+			.birthdate(worker.getBirthdate())
 			.careers(careers.stream()
 				.map(CareerInfoResponse::new)
 				.collect(Collectors.toUnmodifiableList()))
 			.certificates(certificates.stream()
 				.map(CertificateInfoResponse::new)
+				.collect(Collectors.toUnmodifiableList()))
+			.skills(resume.getSkills().stream()
+				.map(SkillInfoResponse::new)
 				.collect(Collectors.toUnmodifiableList()))
 			.build();
 	}
@@ -65,6 +75,15 @@ public record ResumeInfoResponse(
 
 		public CertificateInfoResponse(Certificate certificate) {
 			this.name = certificate.getItem();
+		}
+	}
+
+	@Getter
+	static class SkillInfoResponse {
+		private final String name;
+
+		public SkillInfoResponse(Skill skill) {
+			this.name = skill.getName();
 		}
 	}
 }
