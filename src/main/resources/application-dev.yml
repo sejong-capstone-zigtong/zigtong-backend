@@ -10,3 +10,6 @@ spring:
         show_sql: true
         format_sql: true
 
+jwt:
+  access-token-expiration: 3600000  # 60 minutes
+
