@@ -7,7 +7,7 @@ import jakarta.validation.constraints.NotNull;
 
 public record CareerUpdateRequest(
 	@NotBlank
-	String company,
+	String companyName,
 	@NotBlank
 	String role,
 	@NotBlank

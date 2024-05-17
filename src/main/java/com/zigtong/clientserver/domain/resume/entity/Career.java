@@ -50,7 +50,7 @@ public class Career {
 	public static Career create(Resume resume, CareerUpdateRequest request) {
 		return Career.builder()
 			.resume(resume)
-			.companyName(request.company())
+			.companyName(request.companyName())
 			.role(request.role())
 			.roleDetail(request.roleDetail())
 			.startDate(request.startDate())
