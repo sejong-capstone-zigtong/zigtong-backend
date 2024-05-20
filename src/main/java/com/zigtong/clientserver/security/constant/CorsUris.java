@@ -9,7 +9,8 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor
 public enum CorsUris {
 	LOCAL_SERVER_URL("http://localhost:8080"),
-	LOCAL_DOMAIN_URL("http://localhost:3000");
+	LOCAL_DOMAIN_URL("http://localhost:3000"),
+	FRONTEND_URL("https://zigtong.vercel.app");
 
 	private final String value;
 
