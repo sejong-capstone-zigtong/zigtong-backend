@@ -1,9 +1,11 @@
 package com.zigtong.clientserver.domain.resume.entity;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.zigtong.clientserver.domain.certificate.entity.Certificate;
 import com.zigtong.clientserver.domain.relation.entity.ResumeSkillRelation;
+import com.zigtong.clientserver.domain.skill.entity.Skill;
 import com.zigtong.clientserver.domain.worker.entity.Worker;
 
 import jakarta.persistence.CascadeType;
@@ -21,23 +23,17 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Resume {
+	@OneToMany(mappedBy = "resume", cascade = CascadeType.ALL, orphanRemoval = true)
+	private final List<ResumeSkillRelation> resumeSkillRelations = new ArrayList<>();
 	@Id
 	private String id;
-
 	@MapsId
 	@OneToOne(fetch = FetchType.LAZY)
 	private Worker worker;
-
 	private String uploadedUrl;
-
 	private String statement;
-
 	@OneToMany(mappedBy = "resume", cascade = CascadeType.ALL, orphanRemoval = true)
-	private List<ResumeCertificateRelation> resumeCertificateRelations;
-
-	@OneToMany(mappedBy = "resume", cascade = CascadeType.ALL, orphanRemoval = true)
-	private List<ResumeSkillRelation> resumeSkillRelations;
-
+	private final List<ResumeCertificateRelation> resumeCertificateRelations = new ArrayList<>();
 	@OneToMany(mappedBy = "resume", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<Career> careers;
 
@@ -67,5 +63,11 @@ public class Resume {
 
 	public void updateProfileImageUrl(String uploadedUrl) {
 		this.uploadedUrl = uploadedUrl;
+	}
+
+	public void addSkills(Skill... skills) {
+		for (Skill skill : skills) {
+			resumeSkillRelations.add(ResumeSkillRelation.create(this, skill));
+		}
 	}
 }
