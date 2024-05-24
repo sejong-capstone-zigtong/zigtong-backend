@@ -3,6 +3,7 @@ package com.zigtong.clientserver.domain.resume.entity;
 import java.util.List;
 
 import com.zigtong.clientserver.domain.certificate.entity.Certificate;
+import com.zigtong.clientserver.domain.relation.entity.ResumeSkillRelation;
 import com.zigtong.clientserver.domain.worker.entity.Worker;
 
 import jakarta.persistence.CascadeType;
@@ -35,10 +36,10 @@ public class Resume {
 	private List<ResumeCertificateRelation> resumeCertificateRelations;
 
 	@OneToMany(mappedBy = "resume", cascade = CascadeType.ALL, orphanRemoval = true)
-	private List<Career> careers;
+	private List<ResumeSkillRelation> resumeSkillRelations;
 
 	@OneToMany(mappedBy = "resume", cascade = CascadeType.ALL, orphanRemoval = true)
-	private List<Skill> skills;
+	private List<Career> careers;
 
 	private Resume(Worker worker) {
 		this.worker = worker;
