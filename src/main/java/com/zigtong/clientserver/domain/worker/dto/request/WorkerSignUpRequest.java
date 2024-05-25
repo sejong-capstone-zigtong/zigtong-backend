@@ -34,6 +34,8 @@ public record WorkerSignUpRequest(
 	@NotNull
 	Gender gender,
 	@NotBlank(message = EMPTY_ADDRESS)
-	String address
+	String address,
+	@NotNull
+	Integer skillId
 ) {
 }

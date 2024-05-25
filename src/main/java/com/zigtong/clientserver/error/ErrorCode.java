@@ -40,7 +40,8 @@ public enum ErrorCode {
 	KAKAO_ACCOUNT_IS_NULL(HttpStatus.BAD_REQUEST, "카카오 ID가 존재하지 않습니다."),
 
 	// ID/PW 찾기 에러
-	ACCOUNT_NOT_FOUND(HttpStatus.NOT_FOUND, "해당 정보로 가입된 계정이 존재하지 않습니다.");
+	ACCOUNT_NOT_FOUND(HttpStatus.NOT_FOUND, "해당 정보로 가입된 계정이 존재하지 않습니다."),
+	INVALID_SKILL_ID(HttpStatus.BAD_REQUEST, "유효하지 않은 스킬 ID입니다.");
 
 	private final HttpStatus status;
 	private final String message;

@@ -7,7 +7,7 @@ import java.util.stream.Collectors;
 import com.zigtong.clientserver.domain.certificate.entity.Certificate;
 import com.zigtong.clientserver.domain.resume.entity.Career;
 import com.zigtong.clientserver.domain.resume.entity.Resume;
-import com.zigtong.clientserver.domain.resume.entity.Skill;
+import com.zigtong.clientserver.domain.skill.entity.Skill;
 import com.zigtong.clientserver.domain.worker.entity.Worker;
 import com.zigtong.clientserver.domain.worker.type.Gender;
 
@@ -46,8 +46,8 @@ public record ResumeInfoResponse(
 			.certificates(certificates.stream()
 				.map(CertificateInfoResponse::new)
 				.collect(Collectors.toUnmodifiableList()))
-			.skills(resume.getSkills().stream()
-				.map(SkillInfoResponse::new)
+			.skills(resume.getResumeSkillRelations().stream()
+				.map(relation -> new SkillInfoResponse(relation.getSkill()))
 				.collect(Collectors.toUnmodifiableList()))
 			.build();
 	}
@@ -80,10 +80,14 @@ public record ResumeInfoResponse(
 
 	@Getter
 	static class SkillInfoResponse {
+		private final Integer id;
+		private final String category;
 		private final String name;
 
 		public SkillInfoResponse(Skill skill) {
+			this.id = skill.getId();
 			this.name = skill.getName();
+			this.category = skill.getCategory();
 		}
 	}
 }

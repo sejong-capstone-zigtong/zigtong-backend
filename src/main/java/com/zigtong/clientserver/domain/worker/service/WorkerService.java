@@ -7,8 +7,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.zigtong.clientserver.domain.auth.service.AuthService;
+import com.zigtong.clientserver.domain.relation.repository.ResumeSkillRelationRepository;
 import com.zigtong.clientserver.domain.resume.entity.Resume;
 import com.zigtong.clientserver.domain.resume.repository.ResumeRepository;
+import com.zigtong.clientserver.domain.skill.entity.Skill;
+import com.zigtong.clientserver.domain.skill.repository.SkillRepository;
 import com.zigtong.clientserver.domain.worker.dto.request.WorkerSignUpRequest;
 import com.zigtong.clientserver.domain.worker.entity.Worker;
 import com.zigtong.clientserver.domain.worker.repository.WorkerRepository;
@@ -24,6 +27,8 @@ public class WorkerService {
 
 	private final WorkerRepository workerRepository;
 	private final ResumeRepository resumeRepository;
+	private final SkillRepository skillRepository;
+	private final ResumeSkillRelationRepository resumeSkillRelationRepository;
 	private final PasswordEncoder passwordEncoder;
 
 	public void signUp(WorkerSignUpRequest request) {
@@ -36,6 +41,10 @@ public class WorkerService {
 
 		Resume resume = Resume.create(worker);
 		resumeRepository.save(resume);
+
+		Skill skill = skillRepository.findById(request.skillId())
+			.orElseThrow(() -> new CustomException(INVALID_SKILL_ID));
+		resume.addSkills(skill);
 	}
 
 	private void validateEnableSignUp(WorkerSignUpRequest request) {
