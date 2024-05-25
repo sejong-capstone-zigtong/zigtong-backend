@@ -6,6 +6,7 @@ import java.util.List;
 
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -78,4 +79,11 @@ public class ResumeController {
 		resumeService.updateCareer(requests, workerId);
 	}
 
+	@Operation(summary = "스킬 수정", description = "이력서의 스킬을 수정합니다.")
+	@PutMapping("/skill/{skillIds}")
+	public void updateSkills(@PathVariable List<Integer> skillIds) {
+		String workerId = SecurityContextUtil.extractWorkerId();
+
+		resumeService.updateSkills(skillIds, workerId);
+	}
 }

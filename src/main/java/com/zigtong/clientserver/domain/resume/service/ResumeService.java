@@ -17,6 +17,8 @@ import com.zigtong.clientserver.domain.resume.dto.response.ResumeInfoResponse;
 import com.zigtong.clientserver.domain.resume.entity.Career;
 import com.zigtong.clientserver.domain.resume.entity.Resume;
 import com.zigtong.clientserver.domain.resume.repository.ResumeRepository;
+import com.zigtong.clientserver.domain.skill.entity.Skill;
+import com.zigtong.clientserver.domain.skill.repository.SkillRepository;
 import com.zigtong.clientserver.infra.s3.service.S3Service;
 
 import lombok.RequiredArgsConstructor;
@@ -29,6 +31,7 @@ public class ResumeService {
 	private final S3Service s3Service;
 
 	private final ResumeRepository resumeRepository;
+	private final SkillRepository skillRepository;
 
 	private final CertificateRepository certificateRepository;
 
@@ -86,5 +89,18 @@ public class ResumeService {
 			.orElseThrow();
 
 		return ResumeInfoResponse.of(resume);
+	}
+
+	public void updateSkills(List<Integer> skillIds, String workerId) {
+		Resume resume = resumeRepository.findById(workerId)
+			.orElseThrow();
+
+		Skill[] skills = skillIds.stream()
+			.map(skillId -> skillRepository.findById(skillId)
+				.orElseThrow())
+			.toArray(Skill[]::new);
+
+		resume.addSkills(skills);    // FIXME: 기존 데이터 안 지워짐
+		resumeRepository.save(resume);
 	}
 }

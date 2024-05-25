@@ -25,6 +25,8 @@ import lombok.NoArgsConstructor;
 public class Resume {
 	@OneToMany(mappedBy = "resume", cascade = CascadeType.ALL, orphanRemoval = true)
 	private final List<ResumeSkillRelation> resumeSkillRelations = new ArrayList<>();
+	@OneToMany(mappedBy = "resume", cascade = CascadeType.ALL, orphanRemoval = true)
+	private final List<ResumeCertificateRelation> resumeCertificateRelations = new ArrayList<>();
 	@Id
 	private String id;
 	@MapsId
@@ -32,8 +34,6 @@ public class Resume {
 	private Worker worker;
 	private String uploadedUrl;
 	private String statement;
-	@OneToMany(mappedBy = "resume", cascade = CascadeType.ALL, orphanRemoval = true)
-	private final List<ResumeCertificateRelation> resumeCertificateRelations = new ArrayList<>();
 	@OneToMany(mappedBy = "resume", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<Career> careers;
 
@@ -66,6 +66,8 @@ public class Resume {
 	}
 
 	public void addSkills(Skill... skills) {
+		this.resumeSkillRelations.clear();
+
 		for (Skill skill : skills) {
 			resumeSkillRelations.add(ResumeSkillRelation.create(this, skill));
 		}

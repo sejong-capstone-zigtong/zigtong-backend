@@ -27,7 +27,7 @@ public class SkillService {
 	}
 
 	public List<SkillResponse> getSkillsByCategory(String category) {
-		if (category.isBlank()) {
+		if (category == null || category.isBlank()) {
 			return skillRepository.findAll()
 				.stream()
 				.map(SkillResponse::from)
