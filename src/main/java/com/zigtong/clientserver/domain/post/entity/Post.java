@@ -13,12 +13,14 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import lombok.AccessLevel;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
+@EqualsAndHashCode(of = "id")
 public class Post {
 
 	@Id
@@ -63,4 +65,11 @@ public class Post {
 	private LocalDateTime lunchTime;
 
 	private Integer numberOfRecruits;
+
+	public boolean isClosed() {
+		if (recruitmentStatus == RecruitmentStatus.ENDED) {
+			return true;
+		}
+		return LocalDateTime.now().isBefore(startTime) || LocalDateTime.now().isAfter(endTime);
+	}
 }
