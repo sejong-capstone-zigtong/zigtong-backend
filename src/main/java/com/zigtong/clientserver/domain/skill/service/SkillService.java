@@ -20,7 +20,7 @@ public class SkillService {
 
 	@Transactional(readOnly = true)
 	public List<SkillCategoryResponse> getSkillCategories() {
-		return skillRepository.findAll()
+		return skillRepository.findAllCategories()
 			.stream()
 			.map(SkillCategoryResponse::from)
 			.collect(Collectors.toUnmodifiableList());
