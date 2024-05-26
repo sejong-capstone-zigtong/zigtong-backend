@@ -11,3 +11,9 @@ spring:
       max-file-size: 10MB
 swagger:
   version: ${SWAGGER_VERSION:0.0.1}
+server:
+  servlet:
+    encoding:
+      charset: UTF-8
+      enabled: true
+      force: true
