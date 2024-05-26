@@ -6,6 +6,6 @@ public record SkillCategoryResponse(
 	String category
 ) {
 	public static SkillCategoryResponse from(Skill skill) {
-		return new SkillCategoryResponse(skill.getName());
+		return new SkillCategoryResponse(skill.getCategory());
 	}
 }
