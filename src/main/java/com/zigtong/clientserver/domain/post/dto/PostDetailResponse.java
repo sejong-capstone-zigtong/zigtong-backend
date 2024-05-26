@@ -1,4 +1,4 @@
-package com.zigtong.clientserver.domain.post.dto.response;
+package com.zigtong.clientserver.domain.post.dto;
 
 import java.time.LocalDateTime;
 
@@ -10,29 +10,37 @@ import lombok.AccessLevel;
 import lombok.Builder;
 
 @Builder(access = AccessLevel.PRIVATE)
-public record PostPreviewResponse(
+public record PostDetailResponse(
 	Long id,
+	String content,
 	String title,
-	WageType wageType,
 	Long wage,
-	RecruitmentStatus recruitmentStatus,
+	String address,
 	LocalDateTime startTime,
 	LocalDateTime endTime,
 	String category,
-	String location
+	Integer numberOfApplicants,
+	String phoneNumber,
+	RecruitmentStatus recruitmentStatus,
+	String adminId,
+	WageType wageType
 ) {
-	public static PostPreviewResponse from(Post post) {
-		return PostPreviewResponse.builder()
+	public static PostDetailResponse from(Post post) {
+		return builder()
 			.id(post.getId())
+			.content(post.getContent())
 			//.title(post.getTitle())
 			.title("")
-			.wageType(post.getWageType())
 			.wage(post.getWage())
-			.recruitmentStatus(post.getRecruitmentStatus())
-			.location(post.getAddress())
+			.address(post.getAddress())
 			.startTime(post.getStartTime())
 			.endTime(post.getEndTime())
 			.category(post.getCategory())
+			.numberOfApplicants(post.getNumberOfApplicants())
+			.phoneNumber(post.getPhoneNumber())
+			.recruitmentStatus(post.getRecruitmentStatus())
+			.adminId(post.getAdminId())
+			.wageType(post.getWageType())
 			.build();
 	}
 }

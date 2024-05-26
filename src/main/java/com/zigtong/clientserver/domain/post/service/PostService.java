@@ -9,8 +9,11 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.zigtong.clientserver.domain.post.dto.PostDetailResponse;
 import com.zigtong.clientserver.domain.post.dto.response.PostPreviewResponse;
 import com.zigtong.clientserver.domain.post.repository.PostRepository;
+import com.zigtong.clientserver.error.ErrorCode;
+import com.zigtong.clientserver.error.exception.CustomException;
 
 import lombok.RequiredArgsConstructor;
 
@@ -30,5 +33,12 @@ public class PostService {
 			.stream()
 			.map(PostPreviewResponse::from)
 			.collect(Collectors.toUnmodifiableList());
+	}
+
+	@Transactional(readOnly = true)
+	public PostDetailResponse getPostDetail(Long id) {
+		return postRepository.findById(id)
+			.map(PostDetailResponse::from)
+			.orElseThrow(() -> new CustomException(ErrorCode.POST_NOT_FOUND));
 	}
 }

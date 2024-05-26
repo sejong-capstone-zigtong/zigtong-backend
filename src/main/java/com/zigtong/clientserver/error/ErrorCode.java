@@ -33,6 +33,9 @@ public enum ErrorCode {
 	DUPLICATED_PHONE_NUMBER(HttpStatus.CONFLICT, "이미 존재하는 전화번호입니다."),
 	DUPLICATED_MEMBER_ACCOUNT(HttpStatus.CONFLICT, "이미 존재하는 계정입니다."),
 
+	// 공고글 에러
+	POST_NOT_FOUND(HttpStatus.NOT_FOUND, "존재하지 않는 게시글입니다."),
+
 	// 조회 에러
 	MEMBER_NOT_FOUND(HttpStatus.NOT_FOUND, "존재하지 않는 회원입니다."),
 	NICKNAME_IS_NULL(HttpStatus.BAD_REQUEST, "닉네임이 존재하지 않습니다."),
