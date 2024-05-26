@@ -1,5 +1,6 @@
 package com.zigtong.clientserver.domain.post.dto.response;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 import com.zigtong.clientserver.domain.post.entity.Post;
@@ -14,7 +15,7 @@ public record PostPreviewResponse(
 	Long id,
 	String title,
 	WageType wageType,
-	Long wage,
+	BigDecimal wage,
 	RecruitmentStatus recruitmentStatus,
 	LocalDateTime startTime,
 	LocalDateTime endTime,
@@ -25,7 +26,7 @@ public record PostPreviewResponse(
 		return PostPreviewResponse.builder()
 			.id(post.getId())
 			//.title(post.getTitle())
-			.title("")
+			.title(post.getTitle())
 			.wageType(post.getWageType())
 			.wage(post.getWage())
 			.recruitmentStatus(post.getRecruitmentStatus())

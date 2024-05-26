@@ -9,10 +9,13 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.zigtong.clientserver.domain.post.dto.PostDetailResponse;
+import com.zigtong.clientserver.domain.post.dto.response.PostDetailResponse;
 import com.zigtong.clientserver.domain.post.dto.response.PostPreviewResponse;
 import com.zigtong.clientserver.domain.post.entity.Post;
 import com.zigtong.clientserver.domain.post.repository.PostRepository;
+import com.zigtong.clientserver.domain.relation.entity.WorkerApplicationStatus;
+import com.zigtong.clientserver.domain.relation.entity.type.ApplicationStatus;
+import com.zigtong.clientserver.domain.relation.repository.WorkerApplicationStatusRepository;
 import com.zigtong.clientserver.domain.worker.entity.Worker;
 import com.zigtong.clientserver.domain.worker.repository.WorkerRepository;
 import com.zigtong.clientserver.error.ErrorCode;
@@ -27,6 +30,7 @@ import lombok.RequiredArgsConstructor;
 public class PostService {
 	private final PostRepository postRepository;
 	private final WorkerRepository workerRepository;
+	private final WorkerApplicationStatusRepository workerApplicationStatusRepository;
 
 	@Transactional(readOnly = true)
 	public List<PostPreviewResponse> getPostPreviews(int page, int size, String category) {
@@ -42,9 +46,16 @@ public class PostService {
 
 	@Transactional(readOnly = true)
 	public PostDetailResponse getPostDetail(Long id) {
-		return postRepository.findById(id)
-			.map(PostDetailResponse::from)
-			.orElseThrow(() -> new CustomException(ErrorCode.POST_NOT_FOUND));
+		Post post = postRepository.findById(id)
+			.orElseThrow();
+
+		// 모집된 인원
+		List<WorkerApplicationStatus> workerApplicationStatuses = workerApplicationStatusRepository.findAllByPost(post);
+		int acceptedCount = (int)workerApplicationStatuses.stream()
+			.filter(workerApplicationStatus -> workerApplicationStatus.getStatus() == ApplicationStatus.ACCEPTED)
+			.count();
+
+		return PostDetailResponse.from(post, acceptedCount);
 	}
 
 	public void applyPost(Long postId) {

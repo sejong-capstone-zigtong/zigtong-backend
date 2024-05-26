@@ -1,5 +1,6 @@
 package com.zigtong.clientserver.domain.post.entity;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 import com.zigtong.clientserver.domain.post.entity.type.RecruitmentStatus;
@@ -32,7 +33,7 @@ public class Post {
 
 	private String title;
 
-	private Long wage;
+	private BigDecimal wage;
 
 	@Column(columnDefinition = "VARCHAR(255)")
 	private String address;
@@ -62,9 +63,13 @@ public class Post {
 
 	private LocalDateTime recruitmentEndTime;
 
-	private LocalDateTime lunchTime;
+	private LocalDateTime lunchStartTime;
+
+	private LocalDateTime lunchEndTime;
 
 	private Integer numberOfRecruits;
+
+	private LocalDateTime createdAt;
 
 	public boolean isClosed() {
 		if (recruitmentStatus == RecruitmentStatus.ENDED) {
