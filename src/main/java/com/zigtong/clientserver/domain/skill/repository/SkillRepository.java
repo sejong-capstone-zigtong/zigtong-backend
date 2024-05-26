@@ -9,7 +9,7 @@ import com.zigtong.clientserver.domain.skill.entity.Skill;
 
 public interface SkillRepository extends JpaRepository<Skill, Integer> {
 	@Query("SELECT DISTINCT s.category FROM Skill s")
-	List<Skill> findAllCategories();
+	List<String> findAllCategories();
 
 	List<Skill> findByCategory(String category);
 }

@@ -22,7 +22,7 @@ public class SkillService {
 	public List<SkillCategoryResponse> getSkillCategories() {
 		return skillRepository.findAllCategories()
 			.stream()
-			.map(SkillCategoryResponse::from)
+			.map(SkillCategoryResponse::new)
 			.collect(Collectors.toUnmodifiableList());
 	}
 
