@@ -1,9 +1,12 @@
 package com.zigtong.clientserver.domain.worker.entity;
 
 import java.time.LocalDate;
+import java.util.List;
 
 import org.hibernate.annotations.UuidGenerator;
 
+import com.zigtong.clientserver.domain.post.entity.Post;
+import com.zigtong.clientserver.domain.relation.entity.WorkerApplicationStatus;
 import com.zigtong.clientserver.domain.worker.dto.request.WorkerSignUpRequest;
 import com.zigtong.clientserver.domain.worker.type.Gender;
 
@@ -12,6 +15,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -48,6 +52,9 @@ public class Worker {
 	@Column(nullable = false)
 	private Gender gender;
 
+	@OneToMany(mappedBy = "worker")
+	private List<WorkerApplicationStatus> workerApplicationStatuses;
+
 	@Builder(access = AccessLevel.PRIVATE)
 	private Worker(String name, String memberAccount, String password, LocalDate birthdate, String phoneNumber,
 		String nickname, Gender gender) {
@@ -72,5 +79,15 @@ public class Worker {
 			.build();
 
 		return worker;
+	}
+
+	public void apply(Post post) {
+		WorkerApplicationStatus status = WorkerApplicationStatus.apply(this, post);
+		workerApplicationStatuses.add(status);
+	}
+
+	public boolean isApplied(Post post) {
+		return workerApplicationStatuses.stream()
+			.anyMatch(status -> status.isApplied(post));
 	}
 }
