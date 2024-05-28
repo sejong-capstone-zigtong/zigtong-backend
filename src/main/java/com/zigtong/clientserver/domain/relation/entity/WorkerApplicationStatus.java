@@ -55,4 +55,8 @@ public class WorkerApplicationStatus {
 		return this.post.equals(post)
 			&& (this.status == ApplicationStatus.PENDING || this.status == ApplicationStatus.ACCEPTED);
 	}
+
+	public void updateStatus(ApplicationStatus status) {
+		this.status = status;
+	}
 }

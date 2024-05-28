@@ -10,6 +10,7 @@ import com.zigtong.clientserver.domain.relation.entity.WorkerApplicationStatus;
 import com.zigtong.clientserver.domain.worker.dto.request.WorkerSignUpRequest;
 import com.zigtong.clientserver.domain.worker.type.Gender;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -52,7 +53,7 @@ public class Worker {
 	@Column(nullable = false)
 	private Gender gender;
 
-	@OneToMany(mappedBy = "worker")
+	@OneToMany(mappedBy = "worker", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<WorkerApplicationStatus> workerApplicationStatuses;
 
 	@Builder(access = AccessLevel.PRIVATE)
