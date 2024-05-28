@@ -75,6 +75,6 @@ public class Post {
 		if (recruitmentStatus == RecruitmentStatus.ENDED) {
 			return true;
 		}
-		return LocalDateTime.now().isBefore(startTime) || LocalDateTime.now().isAfter(endTime);
+		return LocalDateTime.now().isBefore(recruitmentStartTime) || LocalDateTime.now().isAfter(recruitmentEndTime);
 	}
 }

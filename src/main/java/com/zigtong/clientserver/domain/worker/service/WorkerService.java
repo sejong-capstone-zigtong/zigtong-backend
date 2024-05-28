@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.zigtong.clientserver.domain.auth.service.AuthService;
+import com.zigtong.clientserver.domain.relation.entity.WorkerApplicationStatus;
 import com.zigtong.clientserver.domain.relation.entity.type.ApplicationStatus;
 import com.zigtong.clientserver.domain.resume.entity.Resume;
 import com.zigtong.clientserver.domain.resume.repository.ResumeRepository;
@@ -66,15 +67,26 @@ public class WorkerService {
 		}
 	}
 
-	public List<WorkerApplicationsStatusResponse> findApplicationStatuses(ApplicationStatus status) {
+	public List<WorkerApplicationsStatusResponse> findApplicationStatuses(List<ApplicationStatus> statuses) {
 		String workerId = SecurityContextUtil.extractWorkerId();
 		Worker worker = workerRepository.findById(workerId)
 			.orElseThrow(() -> new CustomException(MEMBER_NOT_FOUND));
 
-		return worker.getWorkerApplicationStatuses()
-			.stream()
-			.filter(workerApplicationStatus -> workerApplicationStatus.getStatus() == status)
+		List<WorkerApplicationStatus> workerApplicationStatuses = worker.getWorkerApplicationStatuses();
+
+		renewApplicationStatus(workerApplicationStatuses);
+
+		return workerApplicationStatuses.stream()
+			.filter(status -> statuses.contains(status.getStatus()))
 			.map(WorkerApplicationsStatusResponse::from)
 			.toList();
+	}
+
+	private void renewApplicationStatus(List<WorkerApplicationStatus> workerApplicationStatuses) {
+		// 해당 worker가 신청한 post 중, pending인 것만 전부 가져와, post가 이미 닫힌 경우 expired로 변경
+		workerApplicationStatuses.stream()
+			.filter(status -> status.getStatus() == ApplicationStatus.PENDING)
+			.filter(status -> status.getPost().isClosed())
+			.forEach(status -> status.updateStatus(ApplicationStatus.EXPIRED));
 	}
 }
