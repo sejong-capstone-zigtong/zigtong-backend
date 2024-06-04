@@ -1,6 +1,7 @@
 package com.zigtong.clientserver.domain.post.entity;
 
 import java.math.BigDecimal;
+import java.sql.Time;
 import java.time.LocalDateTime;
 
 import com.zigtong.clientserver.domain.post.entity.type.RecruitmentStatus;
@@ -63,9 +64,9 @@ public class Post {
 
 	private LocalDateTime recruitmentEndTime;
 
-	private LocalDateTime lunchStartTime;
+	private Time lunchStartTime;
 
-	private LocalDateTime lunchEndTime;
+	private Time lunchEndTime;
 
 	private Integer numberOfRecruits;
 

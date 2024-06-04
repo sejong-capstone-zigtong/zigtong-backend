@@ -1,6 +1,7 @@
 package com.zigtong.clientserver.domain.post.dto.response;
 
 import java.math.BigDecimal;
+import java.sql.Time;
 import java.time.LocalDateTime;
 
 import com.zigtong.clientserver.domain.post.entity.Post;
@@ -19,8 +20,8 @@ public record PostDetailResponse(
 	String address,
 	LocalDateTime startTime,
 	LocalDateTime endTime,
-	LocalDateTime lunchStartTime,
-	LocalDateTime lunchEndTime,
+	Time lunchStartTime,
+	Time lunchEndTime,
 	LocalDateTime createdAt,
 	String category,
 	Integer numberOfApplicants,
