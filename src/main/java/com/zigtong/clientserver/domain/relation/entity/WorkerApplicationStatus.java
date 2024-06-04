@@ -28,6 +28,7 @@ public class WorkerApplicationStatus {
 	private Long id;
 
 	@Enumerated(EnumType.STRING)
+	@Column(name = "application_status", nullable = false)
 	private ApplicationStatus status;
 
 	@ManyToOne(fetch = FetchType.LAZY)
