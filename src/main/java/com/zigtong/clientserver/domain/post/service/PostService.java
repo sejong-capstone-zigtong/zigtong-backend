@@ -40,6 +40,7 @@ public class PostService {
 
 		return postRepository.findAll(pageable)
 			.stream()
+			.filter(post -> !post.isClosed())
 			.map(PostPreviewResponse::from)
 			.collect(Collectors.toUnmodifiableList());
 	}
@@ -68,6 +69,7 @@ public class PostService {
 		validateApply(worker, post);
 
 		worker.apply(post);
+		workerRepository.save(worker);
 	}
 
 	private void validateApply(Worker worker, Post post) {
