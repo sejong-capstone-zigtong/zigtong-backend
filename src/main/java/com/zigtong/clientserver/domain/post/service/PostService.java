@@ -36,9 +36,7 @@ public class PostService {
 	public List<PostPreviewResponse> getPostPreviews(int page, int size, String category) {
 		Pageable pageable = PageRequest.of(page, size, Sort.by("id").descending());
 
-		postRepository.findAllByCategory(category, pageable);
-
-		return postRepository.findAll(pageable)
+		return postRepository.findAllByCategory(category, pageable)
 			.stream()
 			.filter(post -> !post.isClosed())
 			.map(PostPreviewResponse::from)
