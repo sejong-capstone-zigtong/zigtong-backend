@@ -35,6 +35,13 @@ public class PostService {
 	@Transactional(readOnly = true)
 	public List<PostPreviewResponse> getPostPreviews(int page, int size, String category) {
 		Pageable pageable = PageRequest.of(page, size, Sort.by("id").descending());
+		if (category == null || category.isBlank()) {
+			return postRepository.findAll(pageable)
+				.stream()
+				.filter(post -> !post.isClosed())
+				.map(PostPreviewResponse::from)
+				.collect(Collectors.toUnmodifiableList());
+		}
 
 		return postRepository.findAllByCategory(category, pageable)
 			.stream()
