@@ -53,7 +53,7 @@ public class WorkerService {
 	}
 
 	private void validateEnableSignUp(WorkerSignUpRequest request, HttpSession session) {
-		authService.validateVerificationSession(session);
+		//authService.validateVerificationSession(session);
 
 		if (workerRepository.existsByPhoneNumber(request.phoneNumber())) {
 			throw new CustomException(DUPLICATED_PHONE_NUMBER);
